@@ -88,7 +88,7 @@ def main():
     ]
 
     start = (0,0)
-    end = (7,6)
+    end = (3,3)
 
     path = astar(maze, start, end)
 
