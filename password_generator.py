@@ -1,4 +1,3 @@
-
 SYMBOLS = {'~', ':', "'", '+', '[', '\\', '@', '^', '{', '%', '(', '-', '"', '*', '|', ',', '&', '<', '`', '}', '.', '_', '=', ']', '!', '>', ';', '?', '#', '$', ')', '/'}
 is_strong = False
 
@@ -18,7 +17,7 @@ def password_upper_case_counter (password):
             upper_case_number += 1
     return upper_case_number
 
-#TEST TEST
+
 def password_strenght(symbol, upper_case):
     if symbol > 2 and upper_case > 1:
         print("Your Password is very strong!")
@@ -30,7 +29,7 @@ def password_strenght(symbol, upper_case):
     else:
         print("Your password is not strong enought...")
 
-#TEST TEST
+
 while is_strong == False:
     password = input("Type your new password: \n")
     if len(password) < 9:
