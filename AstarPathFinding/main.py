@@ -58,6 +58,9 @@ def search(maze, start, end):
         open_points.pop(current_index)
         closed_points.append(current_node)
 
+        if current_node == end_node:
+            return return_path(current_node, maze)
+
         children = []
 
         for new_position in move:
