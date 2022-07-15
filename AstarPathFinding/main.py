@@ -1,98 +1,67 @@
-class Node():
+import node
+import numpy as np
 
-    def __init__(self, parent=None, position=None):
-        self.parent = parent
-        self.position = position
-
-        self.g = 0
-        self.h = 0
-        self.f = 0
+def return_path(current_node, maze):
+    path = []
+    current = current_node
+    rows_number, collumns_number = np.shape(maze)
+    result = [[0 for i in range(collumns_number)] for j in range(rows_number)]
+    path = path[::-1]
+    while current is not None:
+        path.append(current)
+        current = current.parent
+    for i in range(len(path)):
+        result[[path[i][0]], [path[i][1]]] = "#"
     
+    return result
 
-    def __eq__(self, other):
-        return self.position == other.position
+def search(maze, start, end):
 
-def astar(maze, start, end):
+    #Start conditions
+    start_node = node(None, tuple(start))
+    start_node.g = start_node.h = start_node.f
+    end_node = node(None, tuple(end))
+    end_node.g = end_node.h = end_node.f
 
-    start_node = Node(None, start)
-    start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end)
-    end_node.g = end_node.h = end_node.f = 0
+    #Initating open and closing arrays
+    open_points = []
+    closed_points = []
 
-    open_list = []
-    closed_list = []
+    #Adding start node to the open points to start searching the final path
+    open_points.append(start_node)
 
-    open_list.append(start_node)
+    #Creating iterator, to prevent program from crashing
+    iterations = 0
+    max_iterations = (len(maze) // 2) * 10
 
-    while len(open_list) > 0:
+    #Allowed moves in 2D array
+    move = [[-1, 0],    #up
+            [0, 1]      #right
+            [0, -1]     #left
+            [1, 0]]     #down
 
-        current_node = open_list[0]
+    #Loop untill you find the end
+    while len(open_points) > 0:
+        iterations += 1
+
+        current_node = open_points[0]
         current_index = 0
-        for index, item in enumerate(open_list):
-            if item.f < current_node.f:
-                current_node = item
-                current_index = index
-
-        open_list.pop(current_index)
-        closed_list.append(current_node)
-
-        if current_node == end_node:
-            path = []
-            current = current_node
-            while current is not True:
-                path.append(current.position)
-                current = current.parent
-            return path[::-1]
+        for index, point in enumerate(open_points):
+            if point.f < current_node.f:
+                current_node = point
+                current_index  = index
+        
+        if iterations > max_iterations:
+            print("Too many iterations, failed to find the maze")
+            return return_path(current_node, maze)
+    
+        open_points.pop(current_index)
+        closed_points.append(current_node)
 
         children = []
-        adjanced_squares = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
-        
-        for new_position in adjanced_squares:
-            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
-            if node_position[0] > (len(maze) - 1) or node_position[0] < 0 or node_position[1] > (len(maze[len(maze)-1]) -1) or node_position[1] < 0:
-                continue
-            if maze[node_position[0]][node_position[1]] != 0:
-                continue
 
-            new_node = Node(current_node, node_position)
-            children.append(new_node)
-        
-        for child in children:
+        for new_position in move:
 
-            for closed_child in closed_list:
-                if child == closed_child:
-                    continue
+            node_position = (current_node.position[0] + new_position.position[0],
+                            current_node.position[1] + new_position[1])
             
-            child.g = current_node.g + 1
-            child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1]) - end_node.position[1] ** 2)
-            child.f = child.g + child.h
-
-            for open_node in open_list:
-                if child == open_node and child.g > open_node.g:
-                    continue
-            
-            open_list.append(child)
-
-def main():
-    maze = [
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
-
-    start = (0,0)
-    end = (3,3)
-
-    path = astar(maze, start, end)
-
-    print(path)
-
-if __name__ == '__main__':
-    main()
