@@ -131,13 +131,14 @@ if __name__ == '__main__':
         if path is not None:
             for index in path:
                 for inside_index, path_symbol in enumerate(index):
-                    if inside_index < (len(index) - 1):
+                    if inside_index < (len(path)):
                         path_string += str(path_symbol) + "  "
                     else:
-                        path_string += "\n"
+                        path_string += str(path_symbol) + "\n"
+            print(path_string)
         else:
             print("Too many iterations, failed to find the maze")
-        print(path_string)
+        
 
     #START OF PROGRAM
     result_formatter(search(maze,start,end))
