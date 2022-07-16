@@ -115,7 +115,7 @@ def search(maze, start, end):
             open_nodes.append(child)
 
 if __name__ == '__main__':
-    #MAZE
+    #MAZE -> 1 is a barrier 0 is a valid spot to go throught
     maze = [[0,1,0,0,0,0],
             [0,1,0,0,1,0],
             [0,0,0,0,1,0],
