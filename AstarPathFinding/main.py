@@ -10,10 +10,11 @@ def return_path(current_node, maze):
         path.append(current.position)
         current = current.parent
 
-    path = path[::-1]
-        
+    path = path[::-1] #Reversing path to get final route
+
+    #Changing path array points to route symbol    
     for i in range(len(path)):
-        result[path[i][0]][path[i][1]] = "#"
+        result[path[i][0]][path[i][1]] = "#" 
     
     return result
 
@@ -44,8 +45,11 @@ def search(maze, start, end):
 
     #Loop untill you find the end
     while len(open_nodes) > 0:
+
+        #Iteration counter
         iterations += 1
 
+        #Setting start conditions and checking f score
         current_node = open_nodes[0]
         current_index = 0
         for index, point in enumerate(open_nodes):
@@ -53,52 +57,62 @@ def search(maze, start, end):
                 current_node = point
                 current_index  = index
         
+        #Checking if there is a way to find the path
         if iterations > max_iterations:
-            print("Too many iterations, failed to find the maze")
-            return return_path(current_node, maze)
-    
+            return None
+
+        #Adding nodes to closed and open sets
         open_nodes.pop(current_index)
         closed_nodes.append(current_node)
 
+        #PATH FOUND
         if current_node == end_node:
             return return_path(current_node, maze)
 
+        #Setting children set and shape of maze
         children = []
-
         rows_number, collumns_number = np.shape(maze)
 
-
+        #Looping throught possible moves and checking if they are possible
         for new_position in move:
 
+            #Creating new node position for a children
             new_node_position = (current_node.position[0] + new_position[0],
                             current_node.position[1] + new_position[1])
 
+            #Checking if new node is in maze borders
             if (new_node_position[0] > (rows_number - 1) or
                 new_node_position[0] < 0 or
                 new_node_position[1] > (collumns_number - 1) or
                 new_node_position[1] < 0):
                 continue
-
+                
+            #Checking if new node position is not a barrier
             if maze[new_node_position[0]][new_node_position[1]] != 0:
                 continue
 
+            #Creating new children
             new_node = Node(current_node, new_node_position)
-            
             children.append(new_node)
         
+        #Looping throught all the childrens
         for child in children:
             
+            #Checking if child is already in closed_nodes
             if len([visited_child for visited_child in closed_nodes if visited_child == child]) > 0:
                 continue
 
+            #Counting and setting child node scores
             child.g = current_node.g
             child.h = ((child.position[0] - end_node.position[0] ** 2) +
                         (child.position[1] - end_node.position[1]) ** 2)
             child.f = child.g + child.h
 
+            #Checking if child is in open_nodes and comparing it's g score
             if len([visited_child for visited_child in open_nodes if visited_child == child and child.g > visited_child.g]) > 0:
                 continue
 
+            #Adding child to open_nodes
             open_nodes.append(child)
 
 if __name__ == '__main__':
@@ -109,18 +123,22 @@ if __name__ == '__main__':
             [0,0,1,0,0,0],
             [0,0,0,0,0,0]]
 
-    start = [3,0]   #Start position
-    end = [4,1]     #End position
-
-    path = search(maze, start, end)     #Starting A* Pathfinding Algorithm
+    start = [3,0]   #Start position [Starts from [0,0]]
+    end = [0,4]     #End position [Starts from [0,0]]
 
     #Block of code that formats path into string that visualizate it properly
-    path_string = ""
-    for index in path:
-        for inside_index, path_symbol in enumerate(index):
-            if inside_index < (len(index) - 1):
-                path_string += str(path_symbol) + " "
-            else:
-                path_string += "\n"
+    def result_formatter(path):
+        path_string = ""
+        if path is not None:
+            for index in path:
+                for inside_index, path_symbol in enumerate(index):
+                    if inside_index < (len(index) - 1):
+                        path_string += str(path_symbol) + "  "
+                    else:
+                        path_string += "\n"
+        else:
+            print("Too many iterations, failed to find the maze")
+        print(path_string)
 
-    print(path_string)
+    #START OF PROGRAM
+    result_formatter(search(maze,start,end))
