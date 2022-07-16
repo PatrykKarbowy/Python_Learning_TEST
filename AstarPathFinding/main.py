@@ -4,8 +4,7 @@ import numpy as np
 def return_path(current_node, maze):
     path = []
     current = current_node
-    rows_number, collumns_number = np.shape(maze)
-    result = [[0 for i in range(rows_number + 1)] for j in range(collumns_number - 1)]
+    result = maze
     while current is not None:
         path.append(current.position)
         current = current.parent
@@ -116,7 +115,7 @@ def search(maze, start, end):
             open_nodes.append(child)
 
 if __name__ == '__main__':
-    #MAZE
+    #MAZE -> 1 is a barrier 0 is a valid spot to go throught
     maze = [[0,1,0,0,0,0],
             [0,1,0,0,1,0],
             [0,0,0,0,1,0],
@@ -132,13 +131,14 @@ if __name__ == '__main__':
         if path is not None:
             for index in path:
                 for inside_index, path_symbol in enumerate(index):
-                    if inside_index < (len(index) - 1):
+                    if inside_index < (len(path)):
                         path_string += str(path_symbol) + "  "
                     else:
-                        path_string += "\n"
+                        path_string += str(path_symbol) + "\n"
+            print(path_string)
         else:
             print("Too many iterations, failed to find the maze")
-        print(path_string)
+        
 
     #START OF PROGRAM
     result_formatter(search(maze,start,end))
