@@ -4,8 +4,7 @@ import numpy as np
 def return_path(current_node, maze):
     path = []
     current = current_node
-    rows_number, collumns_number = np.shape(maze)
-    result = [[0 for i in range(rows_number + 1)] for j in range(collumns_number - 1)]
+    result = maze
     while current is not None:
         path.append(current.position)
         current = current.parent
