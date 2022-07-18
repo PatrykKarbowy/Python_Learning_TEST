@@ -1,67 +1,125 @@
-import tkinter as tk
 import numpy as np
-from tkinter import Canvas
+import pygame
+import math
 
-#GLOBAL CONSTANT
-node_width = node_height = 30
-start_x = start_y = 10
+WIDTH = 1000
+WIN = pygame.display.set_mode((WIDTH,WIDTH))
+pygame.display.set_caption("A* Path Finding Algorithm")
 
-class Node():
-    def __init__ (self, parent = None, position = None):
-        self.parent = parent
-        self.position = position
+RED = (255,0,0)
+GREEN = (0,255,0)
+BLACK = (0,0,0)
+WHITE = (255,255,255)
 
-        self.g = 0
-        self.h = 0
-        self.f = 0
+class Node:
+    def __init__ (self, row, col, width, total_rows):
+        self.row = row
+        self.col = col
+        self.x = row * width
+        self.y = col * width
+        self.color = GREEN
+        self.neighbors = []
+        self.width = width
+        self.total_rows = total_rows
 
-    def __eq__ (self, other):
-        return self.position == other.position
+    def get_pos(self):
+        return self.row, self.col
 
-class CanvasEvents(tk.Tk, Node):
-    def __init__ (self, node = "node"):
-        super().__init__()
-        super(tk.Tk, self).__init__(node)
-
-        self.title("A* PATHFINDING ALGORITM")
-        self.canvas = Canvas(self)
-        self.canvas.pack(expand = 1, fill = tk.BOTH)
-        self.started = False
-
-    def create_grid(self, rows, columns):
-        for i in range(1,(rows+1)):
-            for j in range(1,(columns+1)):
-                node_rect = self.canvas.create_rectangle(
-                start_x +(node_width * (j-1)), 
-                start_y + (node_height * (i-1)), 
-                ((start_x +(node_width * (j-1))) + node_width), 
-                (start_y + (node_height * (i-1)) + node_height), 
-                width=1, fill="white",
-                tags = [i-1, j-1]
-                )
-        self.canvas.pack()
-    def node_click_event_start(self, event):
-            node = self.canvas.find_closest(event.x, event.y)
-            self.canvas.itemconfigure(node, fill = "green")
-            print(self.canvas.gettags("current")[0], self.canvas.gettags("current")[1])
-            self.started = True
-            print(self.started)
-    def node_click_event_end(self, event):
-            node = self.canvas.find_closest(event.x, event.y)
-            self.canvas.itemconfigure(node, fill = "red")
-            print(self.canvas.gettags("current")[0], self.canvas.gettags("current")[1])
-    def node_click_event_barrier(self, event):
-            node = self.canvas.find_closest(event.x, event.y)
-            self.canvas.itemconfigure(node, fill = "black")
-            print(self.canvas.gettags("current")[0], self.canvas.gettags("current")[1])
-
+    def is_closed(self):
+        return self.color == RED
     
-if __name__ == "__main__":
-    node_grid = CanvasEvents()
-    node_grid.create_grid(5,5)
-    if node_grid.started == False:
-        node_grid.canvas.tag_bind("current", '<Button-1>', node_grid.node_click_event_start)
-    node_grid.canvas.tag_bind("current", "<Button-2>", node_grid.node_click_event_end)
-    node_grid.canvas.tag_bind("current", "<Button-3>", node_grid.node_click_event_barrier)
-    node_grid.mainloop()
+    def is_open(self):
+        return self.color == GREEN
 
+    def is_barrier(self):
+        return self.color == BLACK
+
+    def is_start(self):
+        return self.color == ORANGE
+
+    def is_end(self):
+        return self.color == TURQOISE
+
+    def reset(self):
+        self.color = WHITE
+
+    def make_closed(self):
+        self.color = RED
+
+    def make_open(self):
+        self.color = GREEN
+
+    def make_barrier(self):
+        self.color = BLACK
+
+    def make_start(self):
+        self.color = ORANGE
+
+    def make_end(self):
+        self.color = TURQOISE
+
+    def make_path(self):
+        self.color = PURPLE
+
+    def draw(self,win):
+        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
+
+    def update_neighbors(self, grid):
+        pass
+
+    def __lt__ (self, other):
+        return False
+
+def make_grid(rows,width):
+        grid = []
+        gap = width // rows
+        for i in range(rows):
+            grid.append([])
+            for j in range(rows):
+                node = Node(i, j, gap, rows)
+                grid[i].append(node)
+
+        return grid
+
+def draw_grid(win, rows, width):
+    gap = width // rows
+    for i in range(rows):
+        pygame.draw.line(win, WHITE, (0, i * gap), (width, i * gap))
+        for j in range(rows):
+            pygame.draw.line(win, WHITE, (j * gap, 0), (j * gap, width))
+    
+
+def draw(win, grid, rows, width):
+    win.fill(WHITE)
+
+    for row in grid:
+        for node in row:
+            node.draw(win)
+    
+    draw_grid(win,rows,width)
+
+    pygame.display.update()
+
+def main(win, width):
+    ROWS = 100
+    grid = make_grid(ROWS, width)
+
+    start = None
+    end = None
+
+    run = True
+    started = False
+
+    while run:
+        draw(win, grid, ROWS, width)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if started:
+                continue
+    
+    pygame.quit()
+
+main(WIN, WIDTH)
+    
