@@ -3,7 +3,7 @@ import pygame
 import math
 
 #WINDOW SETUP
-
+#TEST TEST
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH,WIDTH))
 pygame.display.set_caption("Dijkstra Path Finding Algorithm")
