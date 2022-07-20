@@ -4,7 +4,7 @@ import math
 
 #WINDOW SETUP
 
-WIDTH = 600
+WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH,WIDTH))
 pygame.display.set_caption("Dijkstra Path Finding Algorithm")
 
@@ -20,8 +20,8 @@ PURPLE = (150,0,210)
 
 # BOX SETUP
 
-columns = 30
-rows = 30
+columns = 40
+rows = 40
 
 box_height = WIDTH // rows
 box_width = WIDTH // columns
@@ -105,7 +105,7 @@ def get_clicked_node(x, y):
     return grid[col][row]
 
 def main():
-    pygame.init()
+
     make_grid(columns, rows)
     set_neighbours(columns, rows)
     start_node_set = False
@@ -135,14 +135,14 @@ def main():
                 end_node_set = True
             if pygame.mouse.get_pressed()[1] and not begin_search: # MOUSE WHEEL BUTTON
                 x, y = pygame.mouse.get_pos()
-                node = get_clicked_node(x, y)  
-                node.wall = True
+                node = get_clicked_node(x, y)
+                if node != start_node and node != end_node:
+                    node.wall = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and end_node_set:
                     begin_search = True
                 if event.key == pygame.K_DELETE:
-                    if pygame.mouse.get_pressed()[0]:
-                        x, y = pygame.mouse.get_pos()
+                        x,y = pygame.mouse.get_pos()
                         node = get_clicked_node(x,y)
                         node.reset()
             
