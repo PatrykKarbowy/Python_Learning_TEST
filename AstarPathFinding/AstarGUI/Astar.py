@@ -35,7 +35,6 @@ class Node:
     def __init__ (self, col, row):
         self.x = col
         self.y = row
-        self.touched = False
         self.start = False
         self.end = False
         self.wall = False
@@ -63,7 +62,6 @@ class Node:
         self.wall = False
         self.queued = False
         self.visited = False
-        self.touched = False
 
 def make_grid(cols, rows):
     for col in range(cols):
@@ -150,8 +148,6 @@ def main():
                 if event.key == pygame.K_DELETE:
                         x,y = pygame.mouse.get_pos()
                         node = get_clicked_node(x,y)
-                        if not node.touched:
-                            break
                         if node.start:
                             node.reset()
                             start_node_set = False
