@@ -1,7 +1,6 @@
-import numpy as np
+from types import NoneType
 import pygame
-import math
-
+from tkinter import messagebox
 #WINDOW SETUP
 #TEST TEST
 WIDTH = 800
@@ -36,6 +35,7 @@ class Node:
     def __init__ (self, col, row):
         self.x = col
         self.y = row
+        self.touched = False
         self.start = False
         self.end = False
         self.wall = False
@@ -43,7 +43,6 @@ class Node:
         self.visited = False
         self.neighbours = []
         self.prior = None
-        self.reseted = False
 
     def draw(self, win, color):
         pygame.draw.rect(win, color, (self.x * box_width, self.y * box_height, box_width - 1, box_height - 1))
@@ -62,7 +61,9 @@ class Node:
         self.start = False
         self.end = False
         self.wall = False
-        self.reseted = True
+        self.queued = False
+        self.visited = False
+        self.touched = False
 
 def make_grid(cols, rows):
     for col in range(cols):
@@ -90,9 +91,7 @@ def draw_grid(win, color, cols, rows):
                 node.draw(win, ORANGE)
             if node.wall:
                 node.draw(win, BLACK)  
-            if node.reseted:
-                node.draw(win, WHITE)              
-
+          
                 
 def set_neighbours(cols, rows):
     for col in range(cols):
@@ -105,7 +104,6 @@ def get_clicked_node(x, y):
     return grid[col][row]
 
 def main():
-
     make_grid(columns, rows)
     set_neighbours(columns, rows)
     start_node_set = False
@@ -127,24 +125,43 @@ def main():
                 start_node.start = True
                 start_node_set = True
                 start_node.visited = True
+                start_node.touched = True
                 queue.append(start_node)
             if pygame.mouse.get_pressed()[2] and not end_node_set: # RIGHT MOUSE BUTTON
                 x, y = pygame.mouse.get_pos()
                 end_node = get_clicked_node(x,y)
+                if end_node.start:
+                    break
                 end_node.end = True
                 end_node_set = True
+                end_node.touched = True
             if pygame.mouse.get_pressed()[1] and not begin_search: # MOUSE WHEEL BUTTON
                 x, y = pygame.mouse.get_pos()
                 node = get_clicked_node(x, y)
-                if node != start_node and node != end_node:
-                    node.wall = True
+                if node.start or node.end:
+                    break
+                node.wall = True
+                node.touched = True
+
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and end_node_set:
                     begin_search = True
                 if event.key == pygame.K_DELETE:
                         x,y = pygame.mouse.get_pos()
                         node = get_clicked_node(x,y)
-                        node.reset()
+                        if not node.touched:
+                            break
+                        if node.start:
+                            node.reset()
+                            start_node_set = False
+                            queue.pop(0)
+                        elif node.end:
+                            node.reset()
+                            end_node_set = False
+                        elif node.wall:
+                            node.reset()
+                        node.draw(WIN,WHITE)
             
         if begin_search:
             if len(queue) > 0 and searching:
@@ -161,6 +178,9 @@ def main():
                             neighbour.queued = True
                             neighbour.prior = current_node
                             queue.append(neighbour)
+            elif len(queue) == 0:
+                messagebox.showinfo('NO WAY OUT ERROR','Unfortunatelly there is no way to connect those two points. Try Again!')
+                pygame.quit()
 
         draw_grid(WIN, WHITE, columns, rows)
         pygame.display.flip()
