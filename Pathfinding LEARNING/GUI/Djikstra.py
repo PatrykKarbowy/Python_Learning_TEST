@@ -77,7 +77,7 @@ def draw_grid(win, color, cols, rows):
             node.draw(win, color)
 
             if node.queued:
-                node.draw(win,RED)
+                node.draw(win, RED)
             if node.visited:
                 node.draw(win, GREEN)
             if node in path:
