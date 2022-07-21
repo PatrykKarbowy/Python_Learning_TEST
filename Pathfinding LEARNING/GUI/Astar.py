@@ -1,10 +1,11 @@
+from flask import g
 import pygame
 from tkinter import messagebox
 #WINDOW SETUP
 
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH,WIDTH))
-pygame.display.set_caption("Dijkstra Path Finding Algorithm")
+pygame.display.set_caption("A* Path Finding Algorithm")
 
 # COLORS
 
@@ -41,6 +42,9 @@ class Node:
         self.visited = False
         self.neighbours = []
         self.prior = None
+        self.g = 0
+        self.h = 0
+        self.f = 0
 
     def draw(self, win, color):
         pygame.draw.rect(win, color, (self.x * box_width, self.y * box_height, box_width - 1, box_height - 1))
@@ -109,6 +113,7 @@ def main():
     searching = True
     start_node = None
     end_node = None
+    current_index = 0
 
     while True:
         for event in pygame.event.get():
@@ -160,7 +165,13 @@ def main():
             
         if begin_search:
             if len(queue) > 0 and searching:
-                current_node = queue.pop(0)
+                current_node = queue[0]
+                current_node.visited = True
+                for index, node in enumerate(queue):
+                    if node.f < current_node.f:
+                        current_node = node
+                        current_index  = index  
+                queue.pop(current_index)
                 current_node.visited = True
                 if current_node == end_node:
                     searching = False
@@ -169,7 +180,11 @@ def main():
                         current_node = current_node.prior
                 else:
                     for neighbour in current_node.neighbours:
-                        if not neighbour.queued and not neighbour.wall:
+                        if not neighbour.queued and not neighbour.wall and not neighbour.visited:
+                            neighbour.g = current_node.g
+                            neighbour.h = (((neighbour.x - end_node.x) ** 2) +
+                                        ((neighbour.y - end_node.y) ** 2))
+                            neighbour.f = neighbour.g + neighbour.h
                             neighbour.queued = True
                             neighbour.prior = current_node
                             queue.append(neighbour)
