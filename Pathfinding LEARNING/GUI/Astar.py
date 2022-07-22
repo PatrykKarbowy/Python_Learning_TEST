@@ -1,4 +1,3 @@
-from flask import g
 import pygame
 from tkinter import messagebox
 #WINDOW SETUP
