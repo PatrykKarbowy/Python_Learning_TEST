@@ -113,7 +113,6 @@ def main():
     searching = True
     start_node = None
     end_node = None
-    current_index = 0
 
     while True:
         for event in pygame.event.get():
