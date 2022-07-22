@@ -139,6 +139,5 @@ if __name__ == '__main__':
         else:
             print("Too many iterations, failed to find the maze")
         
-
     #START OF PROGRAM
     result_formatter(search(maze,start,end))

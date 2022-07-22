@@ -81,7 +81,6 @@ def draw_grid(win, color, cols, rows):
                 node.draw(win, GREEN)
             if node in path:
                 node.draw(win, BLUE)
-
             if node.start:
                 node.draw(win, PURPLE)
             if node.end:
