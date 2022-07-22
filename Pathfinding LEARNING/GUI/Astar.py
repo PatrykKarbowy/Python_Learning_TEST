@@ -145,7 +145,6 @@ def main():
                 node.wall = True
                 node.touched = True
 
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and end_node_set:
                     begin_search = True
