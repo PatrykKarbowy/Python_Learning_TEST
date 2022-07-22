@@ -191,6 +191,6 @@ def main():
                 pygame.quit()
 
         draw_grid(WIN, WHITE, columns, rows)
-        pygame.display.flip()
+        pygame.display.update()
   
 main()
