@@ -167,6 +167,7 @@ def main():
             if len(queue) > 0 and searching:
                 current_node = queue[0]
                 current_node.visited = True
+                current_index = 0
                 for index, node in enumerate(queue):
                     if node.f < current_node.f:
                         current_node = node
@@ -180,7 +181,7 @@ def main():
                         current_node = current_node.prior
                 else:
                     for neighbour in current_node.neighbours:
-                        if not neighbour.queued and not neighbour.wall and not neighbour.visited:
+                        if not neighbour.queued and not neighbour.wall:
                             neighbour.g = current_node.g
                             neighbour.h = (((neighbour.x - end_node.x) ** 2) +
                                         ((neighbour.y - end_node.y) ** 2))
