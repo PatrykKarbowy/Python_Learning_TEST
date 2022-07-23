@@ -4,9 +4,9 @@ This is a simple Snake game that i wrote in order to get better with classes and
 
 ___ MOVES ___
 
-KEY UP -> Moves up/n
-KEY DOWN -> Moves down
-KEY LEFT -> Moves left
+KEY UP -> Moves up |
+KEY DOWN -> Moves down |
+KEY LEFT -> Moves left |
 KEY RIGHT -> Moves right
 
 ENJOY!
