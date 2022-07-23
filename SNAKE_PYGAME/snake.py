@@ -3,18 +3,19 @@ from tkinter import messagebox
 from random import randrange
 
 #WINDOWS SETUP
-WIDTH = 900
+WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("SNAKE")
 
 # COLORS
 RED = (255,0,0)
 BLACK = (0,0,0)
-WHITE = (255,255,255)
+DARK_GREY = (169,169,169)
 ORANGE = (255,165,0)
+GREY = (64,64,64)
 
 # SNAKE SIZE
-SIZE = 30
+SIZE = 40
 
 # GRID
 ROWS = WIDTH // SIZE
@@ -53,9 +54,15 @@ class Snake():
         if self.x < 0 or self.x == COLUMNS or self.y < 0 or self. y == ROWS:
             pygame.quit()
 
+        for segment in self.tail[1:]:
+            if self.x == segment.x and self.y == segment.y:
+                pygame.quit()
+
         if self.x == food.x and self.y == food.y:
-            food.x = randrange(0,COLUMNS)
-            food.y = randrange(0,ROWS)
+            while True:
+                food.x = randrange(0,COLUMNS)
+                food.y = randrange(0,ROWS)
+                break
         else:
             self.tail.pop()
 
@@ -70,7 +77,7 @@ class Segment():
         self.y = y
     
     def draw(self):
-        pygame.draw.rect(WIN, WHITE, (self.x * SIZE, self.y * SIZE, SIZE, SIZE))
+        pygame.draw.rect(WIN, DARK_GREY, (self.x * SIZE, self.y * SIZE, SIZE, SIZE))
 
 class Food():
     def __init__(self, x, y):
@@ -80,14 +87,20 @@ class Food():
     def draw(self):
         pygame.draw.rect(WIN, RED, (self.x * SIZE, self.y * SIZE, SIZE, SIZE))
 
-snake  = Snake(15,15)
+snake  = Snake(COLUMNS // 2, ROWS // 2)
 food = Food(randrange(0,COLUMNS),randrange(0,ROWS))
 
 def render_screen():
     WIN.fill(BLACK)
+    draw_grid()
     snake.draw()
     food.draw()
     pygame.display.update()
+
+def draw_grid():
+    for row in range(ROWS):
+        pygame.draw.line(WIN, GREY, (row*SIZE - 1, 0), (row*SIZE - 1, WIDTH), 2)
+        pygame.draw.line(WIN, GREY, (0, row*SIZE - 1), (WIDTH, row*SIZE - 1), 2)
 
 def main():
     clock = pygame.time.Clock()
