@@ -1,5 +1,4 @@
 import pygame
-from tkinter import messagebox
 from random import randrange
 
 #WINDOWS SETUP
