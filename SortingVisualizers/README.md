@@ -1,1 +1,1 @@
-Learning Sorting Algorithms throguht pygame visualisation
+Learning Sorting Algorithms throughout pygame visualisation
