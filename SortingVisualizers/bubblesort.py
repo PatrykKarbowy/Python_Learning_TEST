@@ -32,9 +32,7 @@ def draw_data():
     pygame.display.update()
         
 def swap(i, j):
-    temp = generated_numbers[i]
-    generated_numbers[i] = generated_numbers[j]
-    generated_numbers[j] = temp
+    generated_numbers[i], generated_numbers[j] = generated_numbers[j], generated_numbers[i]
     return generated_numbers
 
 def bubble_sort():
