@@ -8,9 +8,11 @@ This is my pathfinding algorithm visualizers (including Astar and Djikstra). Who
 
 
 ## Demo
+A*
+![](https://github.com/PatrykKarbowy/Python_Learning_TEST/blob/master/Pathfinding%20LEARNING/GUI/Astar_DEMO.gif)
 
-![](https://github.com/PatrykKarbowy/Python_Learning_TEST/tree/master/SNAKE_PYGAME/Snake_DEMO.gif)
-
+Djikstra
+![](https://github.com/PatrykKarbowy/Python_Learning_TEST/blob/master/Pathfinding%20LEARNING/GUI/Djikstra_DEMO.gif)
 
 ## Installation
 
