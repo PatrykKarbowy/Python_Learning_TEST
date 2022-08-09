@@ -10,7 +10,7 @@ iterating throught arrays.
 
 ## Demo
 
-![](https://github.com/PatrykKarbowy/Python_Learning_TEST/tree/master/SNAKE_PYGAME/Snake_DEMO.gif)
+![](https://github.com/PatrykKarbowy/Python_Learning_TEST/blob/master/SNAKE_PYGAME/Snake_DEMO.gif)
 
 
 ## Installation
