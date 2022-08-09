@@ -22,7 +22,7 @@ QUICK SORT
 
 ## Installation
 
-Install snake
+Install sorting visualizers
 
 ```bash
   pip install pygame
