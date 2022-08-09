@@ -5,5 +5,5 @@ Mostly including ALGORITHMS!
 
 Feel free to check every folder...
 
-![](https://github.com/PatrykKarbowy/Python_Learning_TEST/tree/master/SNAKE_PYGAME/Snake_DEMO.gif)
+![](https://github.com/PatrykKarbowy/Python_Learning_TEST/blob/master/Folder_Structure_demo.gif)
 
