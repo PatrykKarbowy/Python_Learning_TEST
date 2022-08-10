@@ -34,4 +34,5 @@ Install Pathfinding visualizers
 - RIGHT_MOUSE_BUTTON -> Adding end node
 - MIDDLE_MOUSE_BUTTON -> Adding barriers
 - DELETE_KEY with mouse hover -> Removing node
+- SPACE - > Starts Finding a path
 
