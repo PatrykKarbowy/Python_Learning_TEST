@@ -1,4 +1,4 @@
-# Python_Learning_TEST
+# Python_Learning
 
 This is a repository with projects that helps me get into Python programming.
 Mostly including ALGORITHMS!
