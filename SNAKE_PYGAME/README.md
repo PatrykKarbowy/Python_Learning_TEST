@@ -1,5 +1,5 @@
 
-#Snake in PyGame
+# Snake in PyGame
 
 This is a simple Snake game that i wrote in order to get better with classes and 
 iterating throught arrays.
